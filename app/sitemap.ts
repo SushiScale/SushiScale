@@ -5,7 +5,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: "https://sushiscale.com",
       lastModified: new Date(),
-      changeFrequency: "monthly",
       priority: 1,
     },
   ];
