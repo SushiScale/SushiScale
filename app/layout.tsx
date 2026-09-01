@@ -15,6 +15,14 @@ export const metadata: Metadata = {
     "lead generation agency",
     "white label digital marketing",
   ],
+
+  // Facebook Domain Verification
+  verification: {
+    other: {
+      "facebook-domain-verification": "okhbkufbf5609at8z8yvhfrnd8d0ze",
+    },
+  },
+
   openGraph: {
     title: "SushiScale – White-Label Meta Ads & Funnels for Agencies",
     description:
@@ -23,14 +31,22 @@ export const metadata: Metadata = {
     siteName: "SushiScale",
     type: "website",
   },
+
   twitter: {
     card: "summary_large_image",
     title: "SushiScale – White-Label Meta Ads & Funnels for Agencies",
     description:
       "Scale your agency without hiring. We handle Meta Ads, GHL, funnels, creatives, and tracking for your clients.",
   },
-  robots: { index: true, follow: true },
-  alternates: { canonical: "https://sushiscale.com" },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
+
+  alternates: {
+    canonical: "https://sushiscale.com",
+  },
 };
 
 export default function RootLayout({
@@ -42,12 +58,17 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
       </head>
+
       <body>{children}</body>
     </html>
   );
