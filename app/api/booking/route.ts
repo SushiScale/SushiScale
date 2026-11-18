@@ -1,6 +1,15 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
+function escapeHtml(value: unknown): string {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export async function POST(req: Request) {
   try {
     const data = await req.json();
@@ -13,9 +22,36 @@ export async function POST(req: Request) {
       },
     });
 
+    const safe = {
+      agencyName: escapeHtml(data.agencyName),
+      fullName: escapeHtml(data.fullName),
+      email: escapeHtml(data.email),
+      phone: escapeHtml(data.phone),
+      website: data.website ? escapeHtml(data.website) : "Not provided",
+      activeClients: escapeHtml(data.activeClients || "Not answered"),
+      canCommit270: escapeHtml(data.canCommit270 || "Not answered"),
+    };
+
+    const qaRows = [
+      ["How many active clients do you currently have?", safe.activeClients],
+      [
+        "Can you commit to a minimum of $270 per client each month?",
+        safe.canCommit270,
+      ],
+    ];
+
+    const contactRows: [string, string, string, boolean][] = [
+      ["🏢", "Agency name", safe.agencyName, false],
+      ["👤", "Full name", safe.fullName, false],
+      ["✉️", "Email", safe.email, true],
+      ["📞", "Phone", safe.phone, false],
+      ["🌐", "Website", safe.website, !!data.website],
+    ];
+
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
-      to: "sushiscale@gmail.com",
+      to: "chiragkumar2199@gmail.com",
+      replyTo: data.email,
       subject: "📅 New Strategy Call Booking",
       html: `
     <!DOCTYPE html>
@@ -43,20 +79,32 @@ export async function POST(req: Request) {
 
             <!-- Body -->
             <tr><td style="padding:28px 32px;">
-              <p style="margin:0 0 16px;font-size:12px;color:#888;display:flex;align-items:center;gap:6px;">
+              <p style="margin:0 0 24px;font-size:12px;color:#888;">
                 🕐 Received · ${new Date().toLocaleString("en-US", { dateStyle: "long", timeStyle: "short" })}
               </p>
 
+              <!-- Qualification answers -->
+              <p style="margin:0 0 12px;font-size:11px;font-weight:500;color:#aaa;text-transform:uppercase;letter-spacing:0.08em;">Qualification answers</p>
+
+              <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e5e3;border-radius:8px;overflow:hidden;margin-bottom:28px;">
+                ${qaRows
+          .map(
+            ([question, answer], i, arr) => `
+                  <tr style="border-bottom:${i < arr.length - 1 ? "1px solid #e5e5e3" : "none"};">
+                    <td style="padding:14px;">
+                      <div style="font-size:12px;color:#777;margin-bottom:4px;">Q${i + 1}. ${question}</div>
+                      <div style="font-size:14px;font-weight:600;color:#1a1a1a;">${answer}</div>
+                    </td>
+                  </tr>`
+          )
+          .join("")}
+              </table>
+
+              <!-- Contact details -->
               <p style="margin:0 0 12px;font-size:11px;font-weight:500;color:#aaa;text-transform:uppercase;letter-spacing:0.08em;">Contact details</p>
 
               <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e5e3;border-radius:8px;overflow:hidden;">
-                ${[
-          ["🏢", "Agency name", data.agencyName, false],
-          ["👤", "Full name", data.fullName, false],
-          ["✉️", "Email", data.email, true],
-          ["📞", "Phone", data.phone, false],
-          ["🌐", "Website", data.website || "Not provided", !!data.website],
-        ]
+                ${contactRows
           .map(
             ([icon, label, value, isLink], i, arr) => `
                   <tr style="border-bottom:${i < arr.length - 1 ? "1px solid #e5e5e3" : "none"};">
@@ -78,7 +126,7 @@ export async function POST(req: Request) {
                 <tr>
                   <td style="font-size:12px;color:#aaa;">Sent by your booking system</td>
                   <td align="right">
-                    <a href="mailto:${data.email}" style="font-size:12px;font-weight:500;color:#4a7fe5;text-decoration:none;">
+                    <a href="mailto:${safe.email}" style="font-size:12px;font-weight:500;color:#4a7fe5;text-decoration:none;">
                       Reply to lead →
                     </a>
                   </td>
