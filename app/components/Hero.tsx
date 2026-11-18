@@ -79,7 +79,7 @@ export default function Hero() {
               GHL Setup:
             </span>
             <span className="ml-2 text-xl font-black text-blue-600">
-              $150–$400
+              $80–$300
             </span>
           </div>
 
@@ -89,7 +89,7 @@ export default function Hero() {
               <Tag size={18} className="text-green-600" />
             </div>
             <div>
-              <div className="text-xl font-black text-green-600">20% OFF</div>
+              {/* <div className="text-xl font-black text-green-600">20% OFF</div> */}
               <div className="text-xs font-medium text-green-700">
                 Until Jan 1, 2027
               </div>
