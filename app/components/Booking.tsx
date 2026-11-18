@@ -7,6 +7,11 @@ type Step = "q1" | "q2" | "form" | "success";
 export default function Booking() {
   const [step, setStep] = useState<Step>("q1");
 
+  const [answers, setAnswers] = useState({
+    activeClients: "",
+    canCommit270: "",
+  });
+
   const [formData, setFormData] = useState({
     agencyName: "",
     fullName: "",
@@ -74,7 +79,10 @@ export default function Booking() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          ...answers,
+        }),
       });
 
       const result = await response.json();
@@ -145,7 +153,13 @@ export default function Booking() {
                 {clientOptions.map((option) => (
                   <button
                     key={option}
-                    onClick={() => setStep("q2")}
+                    onClick={() => {
+                      setAnswers((prev) => ({
+                        ...prev,
+                        activeClients: option,
+                      }));
+                      setStep("q2");
+                    }}
                     className="group rounded-2xl border border-slate-200 bg-white p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-lg"
                   >
                     <div className="font-semibold text-slate-900">
@@ -173,7 +187,13 @@ export default function Booking() {
 
               <div className="grid gap-4">
                 <button
-                  onClick={() => setStep("form")}
+                  onClick={() => {
+                    setAnswers((prev) => ({
+                      ...prev,
+                      canCommit270: "Yes, I can commit",
+                    }));
+                    setStep("form");
+                  }}
                   className="rounded-2xl border border-green-200 bg-green-50 p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
                 >
                   <div className="font-semibold text-green-700">
