@@ -82,6 +82,11 @@ export default function Hero() {
               $80–$300
             </span>
           </div>
+          {/* Discount Badge — inline card matching the row */}
+            
+            </div>
+          </div>
+        </div>
 
         {/* CTA */}
         <div className="mt-10 flex flex-wrap gap-4">
