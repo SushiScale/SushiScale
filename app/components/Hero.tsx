@@ -90,9 +90,9 @@ export default function Hero() {
             </div>
             <div>
               {/* <div className="text-xl font-black text-green-600">20% OFF</div> */}
-              <div className="text-xs font-medium text-green-700">
+              {/* <div className="text-xs font-medium text-green-700">
                 Until Jan 1, 2027
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
