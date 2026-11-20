@@ -83,20 +83,6 @@ export default function Hero() {
             </span>
           </div>
 
-          {/* Discount Badge — inline card matching the row */}
-          <div className="inline-flex items-center gap-3 rounded-2xl border border-green-200 bg-green-50 px-5 py-4">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-green-100">
-              <Tag size={18} className="text-green-600" />
-            </div>
-            <div>
-              {/* <div className="text-xl font-black text-green-600">20% OFF</div> */}
-              {/* <div className="text-xs font-medium text-green-700">
-                Until Jan 1, 2027
-              </div> */}
-            </div>
-          </div>
-        </div>
-
         {/* CTA */}
         <div className="mt-10 flex flex-wrap gap-4">
           <a
