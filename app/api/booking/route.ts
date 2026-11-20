@@ -69,7 +69,7 @@ Received: ${new Date().toLocaleString("en-US", { dateStyle: "long", timeStyle: "
 
     await transporter.sendMail({
       from: `"Booking System" <${process.env.EMAIL_USER}>`,
-      to: "richardanonymous73@gmail.com",
+      to: "sushiscale@gmail.com",
       replyTo: data.email,
       subject: `New Strategy Call Booking - ${data.agencyName}`,
       text,
