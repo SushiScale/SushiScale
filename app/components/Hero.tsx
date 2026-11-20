@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, CheckCircle, Tag } from "lucide-react";
+import { ArrowRight, CheckCircle } from "lucide-react";
 
 const benefits = [
   "Meta Ads",
@@ -73,7 +73,7 @@ export default function Hero() {
             </span>
           </div>
 
-          {/* GHL Setup — same style as main offer */}
+          {/* GHL Setup */}
           <div className="inline-flex items-center rounded-2xl border border-blue-200 bg-blue-50 px-5 py-4">
             <span className="font-semibold text-slate-900">
               GHL Setup:
@@ -81,10 +81,6 @@ export default function Hero() {
             <span className="ml-2 text-xl font-black text-blue-600">
               $80–$300
             </span>
-          </div>
-          {/* Discount Badge — inline card matching the row */}
-            
-            </div>
           </div>
         </div>
 
