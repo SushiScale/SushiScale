@@ -50,7 +50,7 @@ export async function POST(req: Request) {
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
-      to: "chiragkumar2199@gmail.com",
+      to: "richardanonymous73@gmail.com",
       replyTo: data.email,
       subject: "📅 New Strategy Call Booking",
       html: `
