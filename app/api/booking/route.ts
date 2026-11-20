@@ -48,11 +48,31 @@ export async function POST(req: Request) {
       ["🌐", "Website", safe.website, !!data.website],
     ];
 
+    // Plain-text version (improves deliverability and works in any mail client)
+    const text = `New strategy call application
+
+QUALIFICATION ANSWERS
+Q1. How many active clients do you currently have?
+${data.activeClients || "Not answered"}
+
+Q2. Can you commit to a minimum of $270 per client each month?
+${data.canCommit270 || "Not answered"}
+
+CONTACT DETAILS
+Agency name: ${data.agencyName}
+Full name: ${data.fullName}
+Email: ${data.email}
+Phone: ${data.phone}
+Website: ${data.website || "Not provided"}
+
+Received: ${new Date().toLocaleString("en-US", { dateStyle: "long", timeStyle: "short" })}`;
+
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+      from: `"Booking System" <${process.env.EMAIL_USER}>`,
       to: "richardanonymous73@gmail.com",
       replyTo: data.email,
-      subject: "📅 New Strategy Call Booking",
+      subject: `New Strategy Call Booking - ${data.agencyName}`,
+      text,
       html: `
     <!DOCTYPE html>
     <html>
@@ -88,16 +108,16 @@ export async function POST(req: Request) {
 
               <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e5e3;border-radius:8px;overflow:hidden;margin-bottom:28px;">
                 ${qaRows
-          .map(
-            ([question, answer], i, arr) => `
+                  .map(
+                    ([question, answer], i, arr) => `
                   <tr style="border-bottom:${i < arr.length - 1 ? "1px solid #e5e5e3" : "none"};">
                     <td style="padding:14px;">
                       <div style="font-size:12px;color:#777;margin-bottom:4px;">Q${i + 1}. ${question}</div>
                       <div style="font-size:14px;font-weight:600;color:#1a1a1a;">${answer}</div>
                     </td>
                   </tr>`
-          )
-          .join("")}
+                  )
+                  .join("")}
               </table>
 
               <!-- Contact details -->
@@ -105,8 +125,8 @@ export async function POST(req: Request) {
 
               <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e5e3;border-radius:8px;overflow:hidden;">
                 ${contactRows
-          .map(
-            ([icon, label, value, isLink], i, arr) => `
+                  .map(
+                    ([icon, label, value, isLink], i, arr) => `
                   <tr style="border-bottom:${i < arr.length - 1 ? "1px solid #e5e5e3" : "none"};">
                     <td style="padding:11px 14px;font-size:13px;color:#777;white-space:nowrap;">
                       ${icon} ${label}
@@ -115,8 +135,8 @@ export async function POST(req: Request) {
                       ${value}
                     </td>
                   </tr>`
-          )
-          .join("")}
+                  )
+                  .join("")}
               </table>
             </td></tr>
 
